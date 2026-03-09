@@ -19,8 +19,6 @@ services:
       MYSQL_DATABASE : ${DATABASE_NAME}
       MYSQL_USER : ${DATABASE_USER}
       MYSQL_PASSWORD : ${DATABASE_PASSWORD}
-    volumes:
-      - mysql_data:/var/lib/mysql
 
   backend:
     build: ./backend
