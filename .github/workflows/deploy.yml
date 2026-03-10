@@ -6,40 +6,44 @@ on:
       - main
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
+
     steps:
-      -
-        name: Checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
-      -
-        name: login docker hub
+
+      - name: Login Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: build images
+
+      - name: Build images
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./backend
           docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./frontend
-      -
-        name: push images
+
+      - name: Push images
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
+
     steps:
-      -
-        name: deploy to server
-        uses: appleboy/ssh-action@v1.0.0
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1
         with:
-          username: ${{secrets.EC2_USERNAME}}
-          host: ${{secrets.HOST}}
-          key: ${{secrets.EC2_SSH_KEY}}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd self-deploy
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker-compose pull
-            docker-compose up --build -d
+            docker-compose up -d
