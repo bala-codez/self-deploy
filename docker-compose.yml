@@ -10,7 +10,7 @@ services:
       MYSQL_PASSWORD : ${DATABASE_PASSWORD}
 
   backend:
-    build: muthubala2004/backend:latest
+    image: muthubala2004/backend:latest
     container_name: backend
     env_file:
       - .env
@@ -18,7 +18,7 @@ services:
       - mysql
 
   frontend:
-    build: muthubala2004/frontend:latest
+    image : muthubala2004/frontend:latest
     container_name: frontend
     ports:
       - "3000:80"
