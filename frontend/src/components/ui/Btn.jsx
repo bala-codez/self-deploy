@@ -1,5 +1,5 @@
 import Spinner from "./Spinner";
-import { cls } from "../../lib/cls";
+import { cls } from "../../utils/cls";
 
 const VARIANTS = {
     primary:  "bg-[var(--cyan)] text-[#080c12] font-semibold hover:opacity-90 shadow-[0_2px_16px_var(--cyan-glow)] focus:ring-2 focus:ring-[var(--cyan)]/40",
