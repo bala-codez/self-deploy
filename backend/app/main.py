@@ -1,8 +1,7 @@
-from sys import api_version
-
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
-
+from app.core.database import Base, engine
 from app.core.config import settings
 from fastapi.middleware.cors import CORSMiddleware
 from app.controllers.auth_controller import router as auth_router
@@ -13,6 +12,12 @@ app = FastAPI(
     docs_url="/docs" if settings.DEBUG else None,
     redoc_url="/redoc" if settings.DEBUG else None
 )
+
+# db and table migration
+@asynccontextmanager
+def startup(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
+    print("Database tables initialized.")
 
 # allow frontend origin
 app.add_middleware(
