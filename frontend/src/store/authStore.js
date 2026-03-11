@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import api from "../api/axios.js";
 import useToastStore from "./toastStore.js";
+import {API_URL} from "../api/axios.js";
 
 const toast = () => useToastStore.getState();
 
@@ -9,7 +10,6 @@ const useAuthStore = create((set, get) => ({
     accessToken: localStorage.getItem("access_token") || null,
     isAuthenticated: !!localStorage.getItem("access_token"),
 
-    // ── Register ────────────────────────────────────────────────────────────
     register: async (name, email, password) => {
         const response = await api.post("/auth/register", { name, email, password });
         toast().addToast({
@@ -20,7 +20,6 @@ const useAuthStore = create((set, get) => ({
         return { email, success: true };
     },
 
-    // ── Login ────────────────────────────────────────────────────────────────
     login: async (email, password) => {
         const response = await api.post("/auth/login", { email, password });
         const { access_token, refresh_token, user } = response.data.data;
@@ -39,7 +38,6 @@ const useAuthStore = create((set, get) => ({
         return { success: true };
     },
 
-    // ── Verify OTP ───────────────────────────────────────────────────────────
     verifyOtp: async (email, otp) => {
         const response = await api.post("/auth/email/verify-otp", { email, otp });
         const { access_token, refresh_token, user } = response.data.data;
@@ -58,7 +56,6 @@ const useAuthStore = create((set, get) => ({
         return { success: true };
     },
 
-    // ── Resend OTP ───────────────────────────────────────────────────────────
     resendOtp: async (email) => {
         const response = await api.post("/auth/email/resend-otp", { email });
         toast().addToast({
@@ -69,12 +66,11 @@ const useAuthStore = create((set, get) => ({
         return { success: true };
     },
 
-    // ── Google OAuth ─────────────────────────────────────────────────────────
+
     googleLogin: () => {
-        window.location.href = `${import.meta.env.VITE_API_URL}/oauth/google`;
+        window.location.href = `${API_URL}/oauth/google`;
     },
 
-    // Called from OAuthCallbackPage after redirect
     setTokensFromOAuth: (accessToken, refreshToken) => {
         localStorage.setItem("access_token", accessToken);
         localStorage.setItem("refresh_token", refreshToken);
@@ -82,7 +78,6 @@ const useAuthStore = create((set, get) => ({
         set({ accessToken, isAuthenticated: true });
     },
 
-    // ── Logout ───────────────────────────────────────────────────────────────
     logout: () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
