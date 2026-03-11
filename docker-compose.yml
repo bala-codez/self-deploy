@@ -8,11 +8,15 @@ services:
       MYSQL_DATABASE : ${DATABASE_NAME}
       MYSQL_USER : ${DATABASE_USER}
       MYSQL_PASSWORD : ${DATABASE_PASSWORD}
+    ports:
+      - "3306:3306"
 
   backend:
     # image: muthubala2004/backend:latest
     build: ./backend
     container_name: backend
+    ports:
+      - "8000:8000"
     env_file:
       - .env
     depends_on:
