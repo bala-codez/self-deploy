@@ -7,7 +7,7 @@ database_url =\
     f'mysql+pymysql://'
     f'{settings.DATABASE_USER}:'
     f'{settings.DATABASE_PASSWORD}@'
-    f'{settings.DATABASE_HOST}/'
+    f'{settings.DATABASE_HOST}:{settings.DATABASE_PORT}/'
     f'{settings.DATABASE_NAME}'
 )
 

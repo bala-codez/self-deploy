@@ -13,7 +13,7 @@ from app.controllers.oauth_controller import router as oauth_router
 async def life_span(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     print("Database tables initialized.")
-    yield 
+    yield
 
 app = FastAPI(
     title=settings.APP_NAME,
