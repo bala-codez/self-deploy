@@ -1,14 +1,18 @@
-import { Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage.jsx";
-import HomePage from "./pages/HomePage.jsx";
+import AppRouter from "./routes/AppRouter.jsx";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
+import { BrowserRouter } from "react-router-dom";
+import Toast from "./components/ui/Toast.jsx";
+import useToastStore from "./store/toastStore.js";
 
 export default function App() {
+    const { toasts, removeToast } = useToastStore();
+
     return (
-        <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-        </Routes>
+        <BrowserRouter>
+            <ThemeProvider>
+                <AppRouter />
+                <Toast toasts={toasts} remove={removeToast} />
+            </ThemeProvider>
+        </BrowserRouter>
     );
 }
