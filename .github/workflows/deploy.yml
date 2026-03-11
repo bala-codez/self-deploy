@@ -44,6 +44,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd self-deploy
+            git pull origin main
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker compose pull
             docker compose up -d
