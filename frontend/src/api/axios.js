@@ -1,8 +1,29 @@
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const api = axios.create({
-    baseURL: "http://localhost:8000/api/v1",
-    withCredentials: true
-})
+    baseURL: API_URL,
+    withCredentials: true,
+});
+
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        const message =
+            error.response?.data?.message ||
+            error.response?.data?.detail ||
+            "Something went wrong. Please try again.";
+        return Promise.reject(new Error(message));
+    }
+);
 
 export default api;
