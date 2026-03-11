@@ -10,16 +10,17 @@ from app.controllers.oauth_controller import router as oauth_router
 
 # db and table migration
 @asynccontextmanager
-def life_span(app: FastAPI):
+async def life_span(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     print("Database tables initialized.")
+    yield 
 
 app = FastAPI(
     title=settings.APP_NAME,
     version="1.0.0",
     docs_url="/docs" if settings.DEBUG else None,
     redoc_url="/redoc" if settings.DEBUG else None,
-    life_span=life_span
+    lifespan=life_span
 )
 
 # allow frontend origin
