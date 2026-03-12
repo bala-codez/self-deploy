@@ -6,11 +6,11 @@ from app.core.config import settings
 from fastapi.middleware.cors import CORSMiddleware
 from app.controllers.auth_controller import router as auth_router
 from app.controllers.oauth_controller import router as oauth_router
-
+import app.models
 
 # db and table migration
 @asynccontextmanager
-async def life_span(app: FastAPI):
+async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     print("Database tables initialized.")
     yield
@@ -20,13 +20,13 @@ app = FastAPI(
     version="1.0.0",
     docs_url="/docs" if settings.DEBUG else None,
     redoc_url="/redoc" if settings.DEBUG else None,
-    lifespan=life_span
+    lifespan=lifespan
 )
 
 # allow frontend origin
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_ORIGINS],
+    allow_origins=settings.FRONTEND_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
