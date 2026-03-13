@@ -2,17 +2,18 @@ import AppRouter from "./routes/AppRouter.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { BrowserRouter } from "react-router-dom";
 import Toast from "./components/ui/Toast.jsx";
-import useToastStore from "./store/toastStore.js";
+import useAppStore from "./store/appStore.js";
 
 export default function App() {
-    const { toasts, removeToast } = useToastStore();
+  const toasts = useAppStore((s) => s.toasts);
+  const removeToast = useAppStore((s) => s.removeToast);
 
-    return (
-        <BrowserRouter>
-            <ThemeProvider>
-                <AppRouter />
-                <Toast toasts={toasts} remove={removeToast} />
-            </ThemeProvider>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <ThemeProvider>
+        <AppRouter />
+        <Toast toasts={toasts} remove={removeToast} />
+      </ThemeProvider>
+    </BrowserRouter>
+  );
 }
