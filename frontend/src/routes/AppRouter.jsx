@@ -24,7 +24,7 @@ export default function AppRouter() {
             <Route path="/otp" element={<VerifyOtpPage/>}/>
             <Route path="/oauth/callback" element={<OAuthCallbackPage/>}/>
             <Route element={<ProtectedRoute/>}>
-                <Route path="/api" element={<HomePage/>}/>
+                <Route path="/status" element={<HomePage/>}/>
                 <Route element={<Layout/>}>
                     <Route path="/" element={<DashboardPage/>}/>
                     <Route path="/apps" element={<AppsPage/>}/>
